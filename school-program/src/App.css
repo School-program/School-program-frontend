@@ -1,0 +1,38 @@
+/* עיצוב כללי */
+body {
+  font-family: Arial, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* מרכז את התוכן */
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* עיצוב טבלה */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.data-table th {
+  background-color: #f2f2f2;
+}
+
+/* עיצוב שדות קלט */
+input, select {
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 16px;
+}
