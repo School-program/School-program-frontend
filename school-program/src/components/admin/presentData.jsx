@@ -29,8 +29,16 @@ const DailyDataTable = () => {
       else if (dateFilter) {
         url = `http://localhost:3005/dailydata/byDate/${dateFilter}`;
       }
+      const token = localStorage.getItem('authToken'); // שליפת הטוקן מה-localStorage
+      if (!token) {
+          throw new Error("Authentication token not found.");
+      }
 
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          authorization: token,
+      },
+      });
       
       if (response.data.length === 0) {
         setNoResults(true); // אם לא נמצאו תוצאות
@@ -99,10 +107,10 @@ const DailyDataTable = () => {
                   <th>מספר רשומה</th>
                   <th>כיתה</th>
                   <th>תאריך</th>
-                  <th>הרמת כסאות</th>
+              <th>הרמת כסאות</th>
                   <th>טאטוא הכיתה</th>
                   <th>כיבוי אורות וסגירת חלונות</th>
-                  <th>לוח נקי</th>
+                  <th>לוח נקי</th>    
                   <th>סך הכל נקודות</th>
                 </tr>
               </thead>
