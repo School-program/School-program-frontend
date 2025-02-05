@@ -6,11 +6,11 @@ import TopClasses from "./components/users/topClasses";
 import YearGroups from "./components/users/yearGroups";
 import PresentData from "./components/admin/presentData";
 import Score from "./components/admin/scoreYearGroups";
+import ScoreClass from "./components/admin/scoreClass";
 
 function App() {
   return (
     <Router>
-      <div style={{ textAlign: "center", margin: "50px auto" }}>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/all-classes" element={<AllClasses />} />
@@ -18,9 +18,10 @@ function App() {
           <Route path="/year-groups" element={<YearGroups />} />
           <Route path="/present-data" element={<PresentData />} />
           <Route path="/score" element={<Score />} />
+          <Route path="/classes/:year" element={<ScoreClass />} />
+
 
         </Routes>
-      </div>
     </Router>
   );
 }

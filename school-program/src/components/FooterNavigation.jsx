@@ -13,7 +13,7 @@ const FooterNavigation = () => {
       textDecoration: 'none',
       fontSize: '18px',
       fontWeight: 'bold',
-      color: '#3498db', 
+      color: '#000', 
     },
   };
 
