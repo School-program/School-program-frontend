@@ -39,6 +39,7 @@ const YearlyPoints = () => {
 
   return (
     <div style={styles.container}>
+        <FooterNavigation />
       {yearlyPoints.slice(0, 8).map((item, index) => (
         <div key={index} style={styles.box}>
           <span style={styles.text}>{item.year}</span>
@@ -46,7 +47,6 @@ const YearlyPoints = () => {
         </div>
       ))}
    <div style={{ paddingTop: '70px' }}>
-  <FooterNavigation />
 </div>
     </div>
   );
