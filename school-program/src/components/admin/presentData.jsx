@@ -58,8 +58,8 @@ const DailyDataTable = () => {
   }, [classFilter, dateFilter]);
 
   return (
-    <div className="container">
-              <FooterNavigation />
+<div className="container" dir="rtl">
+<FooterNavigation />
       <h1>ניהול נתונים יומי</h1>
 
       {/* סינון לפי כיתה */}
