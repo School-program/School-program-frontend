@@ -13,7 +13,7 @@ const AllClasses = () => {
     };
     const [letter, number] = className.split('');
     const hebrewLetter = letterMap[letter] || letter;
-    return `${hebrewLetter}'- ${number}`;
+    return `${hebrewLetter}'${number}`;
   };
 
   useEffect(() => {
@@ -107,6 +107,8 @@ const AllClasses = () => {
       fontWeight: 'bold',
       position: 'relative',
       zIndex: 1,
+      fontWeight: 'bold',
+
     },
     pointsBox: {
       marginTop: '90px',
@@ -117,6 +119,7 @@ const AllClasses = () => {
       color: 'white',
       fontSize: '18px',
       position: 'absolute',
+
     },
   };
 
