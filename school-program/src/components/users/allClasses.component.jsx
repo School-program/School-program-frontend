@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import FooterNavigation from '../FooterNavigation'; // ייבוא הקומפוננטה החדשה
-import image from '../../images/image.jpg';
+import FooterNavigation from '../FooterNavigation';
+import image from '../../images/image1.png';
 
 const AllClasses = () => {
   const [classes, setClasses] = useState([]);
@@ -9,20 +9,13 @@ const AllClasses = () => {
 
   const convertClassNameToHebrew = (className) => {
     const letterMap = {
-      A: 'א',
-      B: 'ב',
-      C: 'ג',
-      D: 'ד',
-      E: 'ה',
-      F: 'ו',
-      G: 'ז',
-      H: 'ח'
+      A: 'א', B: 'ב', C: 'ג', D: 'ד', E: 'ה', F: 'ו', G: 'ז', H: 'ח'
     };
-  
-    const [letter, number] = className.split(''); // מפריד את האות והמספר
-    const hebrewLetter = letterMap[letter] || letter; // ממיר לאות בעברית או מחזיר את המקור
+    const [letter, number] = className.split('');
+    const hebrewLetter = letterMap[letter] || letter;
     return `${hebrewLetter}'- ${number}`;
   };
+
   useEffect(() => {
     axios.get('http://localhost:3005/classes')
       .then(response => setClasses(response.data))
@@ -33,7 +26,6 @@ const AllClasses = () => {
     const interval = setInterval(() => {
       setCurrentPage(prevPage => (prevPage + 1) % Math.ceil(classes.length / 20));
     }, 20000);
-
     return () => clearInterval(interval);
   }, [classes.length]);
 
@@ -41,115 +33,110 @@ const AllClasses = () => {
   const endIndex = startIndex + 20;
   const currentClasses = classes.slice(startIndex, endIndex);
 
-  const splitIntoColumns = (data) => {
-    const columns = [[], [], [], []];
-    const columnCount = columns.length;
-    const rows = Math.ceil(data.length / columnCount);
-
-    for (let i = 0; i < data.length; i++) {
-      const columnIndex = Math.floor(i / rows);
-      columns[columnIndex].push(data[i]);
-    }
-
-    return columns;
-  };
-
-  const columns = splitIntoColumns(currentClasses);
-
   const styles = {
     container: {
       display: 'flex',
       justifyContent: 'center',
-      paddingRight: '50px',  // הקטנה של הריווח
-      paddingLeft: '50px',   // הקטנה של הריווח
+      alignItems: 'center',
       flexDirection: 'column',
       backgroundImage: `url(${image})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      minHeight: "100vh",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      minHeight: '100vh',
+    },
+    navigation: {
+      position: 'absolute',
+      top: '0',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '100%',
+      textAlign: 'center',
+      padding: '10px 0',
+      backgroundColor: 'transparent',
+      paddingTop: '20px', // הורדת הנתיב מעט למטה
+
+    },
+    titleContainer: {
+      fontSize: '30px',
+      fontWeight: 'bold',
+      color: '#fff', // צבע טקסט לבן
+      backgroundColor: '#7D3C98', // רקע סגול
+      padding: '2px 8px', // ריווח בתוך התיבה
+      borderRadius: '6px', // פינות מעוגלות
+      textAlign: 'center',
+      marginBottom: '20px',
+      marginTop: '60px',
     },
     columnContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      width: '95%',
-      justifyContent: 'space-between',
-    },
-    column: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '22%', // הקטנה של הרוחב של כל עמודה
-    },
-    wrapper: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(5, 1fr)',
+      gap: '15px',
       justifyContent: 'center',
-      padding: '25px', // הקטנה של הריווח
-      borderRadius: '10px',
-      backgroundColor: 'white', // צבע לבן
-      width: '70%', // צמצום הרוחב של הריבוע הלבן
-      marginLeft: '23.8%', 
+      alignItems: 'center',
+      width: '100%',
+      maxWidth: '800px',
     },
     classBox: {
+      width: '90px',
+      height: '120px',
       display: 'flex',
-      flexDirection: 'row',
-      backgroundColor: '#D0F7FF', // רקע שחור
-      borderRadius: '10px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      marginBottom: '18px', // הקטנה של הריווח בין המלבנים
-      padding: '5px', // הקטנה של הריווח בתוך המלבן
-      border: '5px solid purple', // גבול סגול סביב כל מלבן
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      position: 'relative',
     },
-    classInfo: {
-      flex: 1,
-      textAlign: 'center',
+    outerCircle: {
+      width: '85px',
+      height: '85px',
+      borderRadius: '50%',
+      position: 'absolute',
+      background: 'conic-gradient(from 180deg at 0.00% 100.00%, #285AC7 3deg, #A6BCFF 113deg, #C28AD4 207deg, #782DAA 349deg)',
+      boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.25) inset',
     },
-    classPoints: {
-      flex: 1,
-      textAlign: 'center',
-      borderRight: '3px solid purple',
-    },
-    classText: {
-      fontSize: '24px',  // הקטנה של הגודל של הכיתוב
+    innerCircle: {
+      width: '75px',
+      height: '75px',
+      borderRadius: '50%',
+      background: 'black',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+      fontSize: '26px',
       fontWeight: 'bold',
-      color: 'purple', // צבע לבן לכיתוב
+      position: 'relative',
+      zIndex: 1,
+    },
+    pointsBox: {
+      marginTop: '90px',
+      background: '#782DAA',
+      borderRadius: '16px',
+      padding: '4px 8px',
+      textAlign: 'center',
+      color: 'white',
+      fontSize: '18px',
+      position: 'absolute',
     },
   };
+
   return (
     <div style={styles.container}>
-      {/* הניתוב נמצא עכשיו למעלה */}
-      <div style={{ paddingBottom: '20px' }}>
+      <div style={styles.navigation}>
         <FooterNavigation />
       </div>
-  
-      {/* המלבן הלבן הגדול שמקיף את כל המלבנים */}
-      <div style={styles.wrapper}>
-        <div style={styles.columnContainer}>
-          {columns.map((column, colIndex) => (
-            <div key={colIndex} style={styles.column}>
-              {column.map((classItem, index) => (
-                <div key={index} style={styles.classBox}>
-                  {/* עדכון סדר האלמנטים */}
-                  <div style={styles.classPoints}>
-                    <p style={styles.classText}>{classItem.total_points}</p>
-                  </div>
-                  <div style={styles.classInfo}>
-                    <p style={styles.classText}>
-                      {convertClassNameToHebrew(classItem.class_name)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+      <div style={styles.titleContainer}>כל הכיתות</div>
+      <div style={styles.columnContainer}>
+        {currentClasses.map((classItem, index) => (
+          <div key={index} style={styles.classBox}>
+            <div style={styles.outerCircle}></div>
+            <div style={styles.innerCircle}>{convertClassNameToHebrew(classItem.class_name)}</div>
+            <div style={styles.pointsBox}>{classItem.total_points} נקודות</div>
+          </div>
+        ))}
       </div>
     </div>
   );
-  
-  
 };
-
 
 export default AllClasses;
