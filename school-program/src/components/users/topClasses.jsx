@@ -91,7 +91,6 @@ const styles = {
     borderRadius: '6px', // פינות מעוגלות
     textAlign: 'center',
     marginBottom: '20px',
-    // paddingTop: '10px', 
     marginTop: '60px',
   },
 
