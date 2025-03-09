@@ -64,6 +64,7 @@ const TopClasses = () => {
 
 const styles = {
   container: {
+    fontFamily: 'Arial, sans-serif',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -114,6 +115,7 @@ const styles = {
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     border: '7px solid #7D3C98',
     position: 'relative', // הוספת position relative
+      zIndex: 1,
   },
   classInfo: {
     textAlign: 'center',
@@ -121,17 +123,18 @@ const styles = {
   classText: {
     fontSize: '60px', // הגדלת הטקסט בתוך העיגול
     fontWeight: 'bold',
+    
   },
   classPoints: {
-    fontSize: '25px',
+    fontSize: '22px',
     backgroundColor: '#7D3C98',
     borderRadius: '10px',
     padding: '4px 11px',
     color: '#fff',
     fontWeight: 'bold',
     position: 'absolute',
-    marginTop:'15px',
     transform: 'translate(-19%, -0.5%)', 
+    
   },
   topStar: {
     position: 'absolute',

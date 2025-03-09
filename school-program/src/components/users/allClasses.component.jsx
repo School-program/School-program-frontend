@@ -35,6 +35,7 @@ const AllClasses = () => {
 
   const styles = {
     container: {
+      fontFamily: 'Arial, sans-serif',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -117,7 +118,7 @@ const AllClasses = () => {
       padding: '4px 8px',
       textAlign: 'center',
       color: 'white',
-      fontSize: '18px',
+      fontSize: '16px',
       position: 'absolute',
 
     },

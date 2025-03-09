@@ -35,6 +35,7 @@ const YearlyPoints = () => {
 
   const styles = {
     container: {
+      fontFamily: 'Arial, sans-serif',
       display: 'flex',
       flexDirection: 'column',
       backgroundImage: `url(${image})`,
