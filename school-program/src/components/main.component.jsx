@@ -138,6 +138,7 @@ function Main() {
 
 const styles = {
   container: {
+    fontFamily: 'Arial, sans-serif',
     display: "flex",
     flexDirection: "row",
     backgroundImage: `url(${image})`,
@@ -161,7 +162,7 @@ const styles = {
     textAlign: "center",
     color: "black",
     fontSize: 40,
-    fontFamily: "Assistant",
+    fontFamily: 'Arial, sans-serif',
     fontWeight: "700",
     wordWrap: "break-word",
     marginBottom: "20px",
@@ -190,7 +191,7 @@ const styles = {
     gap: "10px",
     color: "black",
     fontSize: "20px",
-    fontFamily: "Assistant",
+    fontFamily: 'Arial, sans-serif',
     fontWeight: "700",
     textAlign: "center",
   },
@@ -209,7 +210,7 @@ const styles = {
     gap: "10px",
     color: "black",
     fontSize: "20px",
-    fontFamily: "Assistant",
+    fontFamily: 'Arial, sans-serif',
     fontWeight: "700",
     textAlign: "center",
   },
@@ -241,7 +242,7 @@ const styles = {
     textAlign: "center",
     color: "black",
     fontSize: "24px",
-    fontFamily: "Assistant",
+    fontFamily: 'Arial, sans-serif',
     fontWeight: "700",
   },
   form: {
@@ -260,7 +261,7 @@ const styles = {
   label: {
     color: "black",
     fontSize: "20px",
-    fontFamily: "Assistant",
+    fontFamily: 'Arial, sans-serif',
     fontWeight: "600",
     textAlign: "center", // Center the label text
   },
@@ -275,7 +276,7 @@ const styles = {
   userGreeting: {
     textAlign: "center",
     fontSize: "20px",
-    fontFamily: "Assistant",
+    fontFamily: 'Arial, sans-serif',
     fontWeight: "700",
     paddingTop : "20px",
   },

@@ -232,9 +232,7 @@ const styles = {
    filterBox: {
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: 'white',
     borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
     marginBottom: '20px',
     maxWidth: '40%', // מצמצם את הרוחב כך שיתאים לסינון בלבד
     marginLeft: 'auto',
@@ -243,6 +241,7 @@ const styles = {
   title: {
     fontSize: '30px',
     fontWeight: 'bold',
+    
     color: '#fff', // צבע טקסט לבן
     backgroundColor: '#7D3C98', // רקע סגול
     padding: '2px 8px', // ריווח בתוך התיבה
