@@ -241,6 +241,7 @@ const styles = {
   title: {
     fontSize: '30px',
     fontWeight: 'bold',
+    
     color: '#fff', // צבע טקסט לבן
     backgroundColor: '#7D3C98', // רקע סגול
     padding: '2px 8px', // ריווח בתוך התיבה
