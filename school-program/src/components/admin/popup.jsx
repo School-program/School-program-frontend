@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { addDailyDataAndUpdatePoints } from "../../apiService";
 
-// פונקציה לקבלת התאריך המקומי ללא שעה
+// פונקציה לקבלת התאריך בפורמט מתאים
 const getLocalDate = () => {
   const now = new Date();
-  now.setHours(0, 0, 0, 0); // אתחול השעה ל-00:00
-  return now.toLocaleDateString("en-CA"); // התאריך המקומי בפורמט YYYY-MM-DD
+  now.setHours(0, 0, 0, 0);
+  return now.toLocaleDateString("en-CA");
 };
 
-function Popup({ className, onClose }) {
+const convertClassNameToHebrew = (className) => {
+  const letterMap = {
+    A: 'א', B: 'ב', C: 'ג', D: 'ד', E: 'ה', F: 'ו', G: 'ז', H: 'ח'
+  };
+  const [letter, number] = className.split('');
+  const hebrewLetter = letterMap[letter] || letter;
+  return `${hebrewLetter}'${number}`;
+};
+
+function Popup({ className, onClose, onConfirm }) {
   const [tasks, setTasks] = useState({
     chairs: false,
     sweep: false,
@@ -18,92 +27,103 @@ function Popup({ className, onClose }) {
   const [totalPoints, setTotalPoints] = useState(0);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
-  const calculatePoints = (newTasks) => {
-    const points = Object.values(newTasks).filter(Boolean).length * 10;
-    setTotalPoints(points);
-  };
+  useEffect(() => {
+    // בדיקה האם כבר נוספו נקודות לכיתה הזו היום
+    const savedData = JSON.parse(localStorage.getItem(className));
+    if (savedData && savedData.date === getLocalDate()) {
+      setTasks(savedData.tasks);
+      setTotalPoints(savedData.totalPoints);
+    }
+  }, [className]);
 
   const handleCheckboxChange = (task) => {
     const newTasks = { ...tasks, [task]: !tasks[task] };
     setTasks(newTasks);
-    calculatePoints(newTasks); // עדכון נקודות
+    setTotalPoints(Object.values(newTasks).filter(Boolean).length * 10);
   };
 
   const handleConfirm = () => {
-    setShowConfirmationPopup(true); // מציג את הפופאפ של האישור הסופי
+    setShowConfirmationPopup(true);
   };
 
   const finalizeConfirm = async () => {
+    const entry_date = getLocalDate();
     const cycleLetter = className[0];
     const classNumber = parseInt(className.slice(1), 10);
-    const cycleNumber = cycleLetter.charCodeAt(0) - "א".charCodeAt(0) + 1;
+    const cycleNumber = cycleLetter.charCodeAt(0) - "A".charCodeAt(0) + 1;
     const classId = (cycleNumber - 1) * 5 + classNumber;
-
-    const entry_date = getLocalDate();
 
     const data = {
       class_id: classId,
-      entry_date: entry_date,
+      entry_date,
       ...tasks,
       total_points: totalPoints,
     };
 
     try {
-      await addDailyDataAndUpdatePoints(data); // עדכון הנתונים בשרת
+      await addDailyDataAndUpdatePoints(data);
 
-      // שמירה ב-localStorage עם התאריך הנכון
+      // שמירת הנתונים בלוקאל סטורג'
       localStorage.setItem(
         className,
-        JSON.stringify({
-          tasks,
-          totalPoints,
-          date: entry_date,
-        })
+        JSON.stringify({ tasks, totalPoints, date: entry_date })
       );
 
-      setShowConfirmationPopup(false); // הסתרת הפופאפ
-      onClose(); // סגירת הפופאפ הראשי
+      // קריאה לפונקציה `onConfirm` אם היא קיימת
+      if (onConfirm) {
+        onConfirm(className);
+      }
     } catch (error) {
-      console.error("אירעה שגיאה בעדכון הנקודות:", error);
+      console.error("שגיאה בעדכון הנקודות:", error);
+    } finally {
+      // סגירת הפופאפ תמיד, גם אם יש שגיאה
+      setShowConfirmationPopup(false);
+      onClose();
     }
-  };
-
-  const closeConfirmationPopup = () => {
-    setShowConfirmationPopup(false); // סגירת פופאפ האישור
   };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.popup}>
-        <h3>הוספת נקודות לכיתה {className}</h3>
-        <div style={styles.tasks}>
-          {["chairs", "sweep", "lightswindows", "board"].map((task) => (
-            <label key={task} style={styles.label}>
+        <h3 style={styles.title}>הוספת נקודות לכיתה {convertClassNameToHebrew(className)}</h3>
+        <div style={styles.taskList}>
+          {[
+            { key: "chairs", label: "הרמת כסאות", color: "#ff7043" },
+            { key: "sweep", label: "טאטוא הכיתה", color: "#9ccc65" },
+            { key: "lightswindows", label: "כיבוי אורות וסגירת חלונות", color: "#5c6bc0" },
+            { key: "board", label: "לוח נקי", color: "#ab47bc" },
+          ].map(({ key, label, color }) => (
+            <label key={key} style={{ ...styles.taskLabel, color }}>
               <input
                 type="checkbox"
-                checked={tasks[task]}
-                onChange={() => handleCheckboxChange(task)} // עדכון בחירת המשימה
+                checked={tasks[key]}
+                onChange={() => handleCheckboxChange(key)}
               />
-              {task === "chairs" && "הרמת כסאות"}
-              {task === "sweep" && "טאטוא הכיתה"}
-              {task === "lightswindows" && "כיבוי אורות וסגירת חלונות"}
-              {task === "board" && "לוח נקי"}
+              {label}
             </label>
           ))}
         </div>
 
-        <p>סה"כ נקודות: {totalPoints}</p>
+        <p style={styles.totalPoints}>סה"כ נקודות: {totalPoints}</p>
 
-        <button onClick={handleConfirm}>אישור</button>
-        <button onClick={onClose}>ביטול</button>
+        <button style={styles.confirmButton} onClick={handleConfirm}>
+          הוספת נקודות
+        </button>
+        <button style={styles.cancelButton} onClick={onClose}>
+          ביטול
+        </button>
       </div>
 
       {showConfirmationPopup && (
-        <div style={styles.confirmationOverlay}>
+        <div style={styles.overlay}>
           <div style={styles.confirmationPopup}>
-            <p>האם אתה בטוח שברצונך להוסיף {totalPoints} נקודות לכיתה {className}?</p>
-            <button onClick={finalizeConfirm}>אישור</button>
-            <button onClick={closeConfirmationPopup}>ביטול</button>
+            <p>האם אתה בטוח שברצונך להוסיף {totalPoints} נקודות לכיתה {convertClassNameToHebrew(className)}?</p>
+            <button style={styles.confirmButton} onClick={finalizeConfirm}>
+              אישור
+            </button>
+            <button style={styles.cancelButton} onClick={() => setShowConfirmationPopup(false)}>
+              ביטול
+            </button>
           </div>
         </div>
       )}
@@ -111,50 +131,17 @@ function Popup({ className, onClose }) {
   );
 }
 
+// עיצוב הפופאפ והכפתורים
 const styles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  popup: {
-    backgroundColor: "white",
-    padding: "20px",
-    borderRadius: "5px",
-    width: "300px",
-    textAlign: "center",
-  },
-  tasks: {
-    margin: "10px 0",
-  },
-  label: {
-    display: "block",
-    marginBottom: "10px",
-  },
-  confirmationOverlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  confirmationPopup: {
-    backgroundColor: "white",
-    padding: "20px",
-    borderRadius: "5px",
-    width: "300px",
-    textAlign: "center",
-  },
+  overlay: {      fontFamily: 'Arial, sans-serif',    position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center" },
+  popup: {       fontFamily: 'Arial, sans-serif',    backgroundColor: "#e3f2fd", padding: "20px", borderRadius: "12px", textAlign: "center", width: "320px" },
+  title: {       fontFamily: 'Arial, sans-serif',    fontSize: "18px", fontWeight: "bold", color: "#3f51b5", marginBottom: "10px" },
+  taskList: {      fontFamily: 'Arial, sans-serif',    marginBottom: "10px" },
+  taskLabel: {       fontFamily: 'Arial, sans-serif',    display: "block", fontSize: "16px", marginBottom: "8px" },
+  totalPoints: {      fontFamily: 'Arial, sans-serif',    fontSize: "18px", fontWeight: "bold" },
+  confirmButton: {      fontFamily: 'Arial, sans-serif',    backgroundColor: "#4CAF50", color: "white", padding: "10px", borderRadius: "8px", cursor: "pointer", margin: "5px" },
+  cancelButton: {       fontFamily: 'Arial, sans-serif',    backgroundColor: "#f44336", color: "white", padding: "10px", borderRadius: "8px", cursor: "pointer", margin: "5px" },
+  confirmationPopup: {       fontFamily: 'Arial, sans-serif',    backgroundColor: "white", padding: "20px", borderRadius: "10px", textAlign: "center", width: "300px" },
 };
 
 export default Popup;

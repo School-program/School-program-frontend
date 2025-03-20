@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../App.css';
-import FooterNavigation from '../FooterNavigation';
+import FooterNavigation from '../FooterNavigationAdmin';
 
 
 
@@ -170,6 +170,7 @@ const styles = {
       margin: '0',
       direction: 'rtl',
       backgroundColor: '#D0F7FF', // רקע תכלת בהיר
+      
     },
   header: {
     textAlign: 'center',
@@ -241,7 +242,7 @@ const styles = {
   title: {
     fontSize: '30px',
     fontWeight: 'bold',
-    
+
     color: '#fff', // צבע טקסט לבן
     backgroundColor: '#7D3C98', // רקע סגול
     padding: '2px 8px', // ריווח בתוך התיבה
