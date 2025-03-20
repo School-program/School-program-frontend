@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { addDailyDataAndUpdatePoints } from "../../apiService";
 
-// פונקציה לקבלת התאריך בפורמט מתאים
 const getLocalDate = () => {
   const now = new Date();
   now.setHours(0, 0, 0, 0);
@@ -28,7 +27,6 @@ function Popup({ className, onClose, onConfirm }) {
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
   useEffect(() => {
-    // בדיקה האם כבר נוספו נקודות לכיתה הזו היום
     const savedData = JSON.parse(localStorage.getItem(className));
     if (savedData && savedData.date === getLocalDate()) {
       setTasks(savedData.tasks);
@@ -62,21 +60,16 @@ function Popup({ className, onClose, onConfirm }) {
 
     try {
       await addDailyDataAndUpdatePoints(data);
-
-      // שמירת הנתונים בלוקאל סטורג'
       localStorage.setItem(
         className,
         JSON.stringify({ tasks, totalPoints, date: entry_date })
       );
-
-      // קריאה לפונקציה `onConfirm` אם היא קיימת
       if (onConfirm) {
         onConfirm(className);
       }
     } catch (error) {
       console.error("שגיאה בעדכון הנקודות:", error);
     } finally {
-      // סגירת הפופאפ תמיד, גם אם יש שגיאה
       setShowConfirmationPopup(false);
       onClose();
     }
@@ -87,8 +80,7 @@ function Popup({ className, onClose, onConfirm }) {
       <div style={styles.popup}>
         <h3 style={styles.title}>הוספת נקודות לכיתה {convertClassNameToHebrew(className)}</h3>
         <div style={styles.taskList}>
-          {[
-            { key: "chairs", label: "הרמת כסאות", color: "#ff7043" },
+          {[{ key: "chairs", label: "הרמת כסאות", color: "#ff7043" },
             { key: "sweep", label: "טאטוא הכיתה", color: "#9ccc65" },
             { key: "lightswindows", label: "כיבוי אורות וסגירת חלונות", color: "#5c6bc0" },
             { key: "board", label: "לוח נקי", color: "#ab47bc" },
@@ -131,17 +123,16 @@ function Popup({ className, onClose, onConfirm }) {
   );
 }
 
-// עיצוב הפופאפ והכפתורים
 const styles = {
-  overlay: {      fontFamily: 'Arial, sans-serif',    position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center" },
-  popup: {       fontFamily: 'Arial, sans-serif',    backgroundColor: "#e3f2fd", padding: "20px", borderRadius: "12px", textAlign: "center", width: "320px" },
-  title: {       fontFamily: 'Arial, sans-serif',    fontSize: "18px", fontWeight: "bold", color: "#3f51b5", marginBottom: "10px" },
-  taskList: {      fontFamily: 'Arial, sans-serif',    marginBottom: "10px" },
-  taskLabel: {       fontFamily: 'Arial, sans-serif',    display: "block", fontSize: "16px", marginBottom: "8px" },
-  totalPoints: {      fontFamily: 'Arial, sans-serif',    fontSize: "18px", fontWeight: "bold" },
-  confirmButton: {      fontFamily: 'Arial, sans-serif',    backgroundColor: "#4CAF50", color: "white", padding: "10px", borderRadius: "8px", cursor: "pointer", margin: "5px" },
-  cancelButton: {       fontFamily: 'Arial, sans-serif',    backgroundColor: "#f44336", color: "white", padding: "10px", borderRadius: "8px", cursor: "pointer", margin: "5px" },
-  confirmationPopup: {       fontFamily: 'Arial, sans-serif',    backgroundColor: "white", padding: "20px", borderRadius: "10px", textAlign: "center", width: "300px" },
+  overlay: { fontFamily: 'Arial, sans-serif', position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center" },
+  popup: { fontFamily: 'Arial, sans-serif', backgroundColor: "#e3f2fd", padding: "20px", borderRadius: "12px", textAlign: "center", width: "320px", border: "5px solid purple" },
+  title: { fontFamily: 'Arial, sans-serif', fontSize: "30px", fontWeight: "bold", color: "#3f51b5", marginBottom: "30px" },
+  taskList: { fontFamily: 'Arial, sans-serif', marginBottom: "10px" },
+  taskLabel: { fontFamily: 'Arial, sans-serif', display: "flex", alignItems: "center", gap: "10px", fontSize: "25px", marginBottom: "8px" },
+  totalPoints: { fontFamily: 'Arial, sans-serif', fontSize: "30px", fontWeight: "bold" },
+  confirmButton: { fontFamily: 'Arial, sans-serif', backgroundColor: "#4CAF50", color: "white", padding: "10px", borderRadius: "8px", cursor: "pointer", margin: "5px" },
+  cancelButton: { fontFamily: 'Arial, sans-serif', backgroundColor: "#f44336", color: "white", padding: "10px", borderRadius: "8px", cursor: "pointer", margin: "5px" },
+  confirmationPopup: { fontFamily: 'Arial, sans-serif', backgroundColor: "white", padding: "20px", borderRadius: "10px", textAlign: "center", width: "300px" },
 };
 
 export default Popup;

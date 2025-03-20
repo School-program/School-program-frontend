@@ -102,8 +102,8 @@ function ClassesView({ year }) {
       margin: "0 10px",
     },
     outerCircle: {
-      width: "140px",
-      height: "140px",
+      width: "135px",
+      height: "135px",
       borderRadius: "50%",
       position: "absolute",
       background: "#7D3C98",
