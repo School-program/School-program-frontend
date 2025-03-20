@@ -88,16 +88,16 @@ const AllClasses = () => {
       position: 'relative',
     },
     outerCircle: {
-      width: '85px',
-      height: '85px',
+      width: '110px',
+      height: '110px',
       borderRadius: '50%',
       position: 'absolute',
       background: 'conic-gradient(from 180deg at 0.00% 100.00%, #285AC7 3deg, #A6BCFF 113deg, #C28AD4 207deg, #782DAA 349deg)',
       boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.25) inset',
     },
     innerCircle: {
-      width: '75px',
-      height: '75px',
+      width: '100px',
+      height: '100px',
       borderRadius: '50%',
       background: 'black',
       display: 'flex',
@@ -112,9 +112,9 @@ const AllClasses = () => {
 
     },
     pointsBox: {
-      marginTop: '90px',
+      marginTop: '120px',
       background: '#782DAA',
-      borderRadius: '16px',
+      borderRadius: '10px',
       padding: '4px 8px',
       textAlign: 'center',
       color: 'white',
