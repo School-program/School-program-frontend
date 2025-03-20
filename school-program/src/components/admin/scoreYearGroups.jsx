@@ -1,49 +1,62 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import SideNav from "./sideNav";
+import ClassesView from "./classesView";
+import FooterNavigation from "../FooterNavigationAdmin"
+import img from "../../images/image1.png"
 
 function ScoreYearGroups() {
-  const navigate = useNavigate();
-  const yearGroups = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח"];
+  const [selectedYear, setSelectedYear] = useState("A");
 
-  const handleYearClick = (year) => {
-    navigate(`/classes/${year}`);
+  const styles = {
+    appContainer: {
+      fontFamily: 'Arial, sans-serif',
+      direction: "rtl",
+      height: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      backgroundImage: `url(${img})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      minHeight: '100vh',
+    },
+    mainLayout: {
+      flex: 1,
+      display: "flex",
+      overflow: "hidden",
+    },
+    contentArea: {
+      flex: 1,
+      padding: "20px",
+      overflowY: "auto",
+    },
+       navigation: {
+      position: 'absolute',
+      top: '0',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '100%',
+      textAlign: 'center',
+      padding: '10px 0',
+      backgroundColor: 'transparent',
+      paddingTop: '20px',
+    },
   };
 
   return (
-    <div style={styles.container}>
-      {yearGroups.map((year) => (
-        <div
-          key={year}
-          style={styles.box}
-          onClick={() => handleYearClick(year)}
-        >
-          {year}
+    <div style={styles.appContainer}>
+ <div style={styles.navigation}>
+        <FooterNavigation />
+      </div>
+      
+            <div style={styles.mainLayout}>
+        <SideNav selectedYear={selectedYear} onSelectYear={setSelectedYear} />
+        <div style={styles.contentArea}>
+          <ClassesView year={selectedYear} />
         </div>
-      ))}
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)", // 4 עמודות
-    gap: "20px",
-    justifyContent: "center",
-    padding: "20px",
-  },
-  box: {
-    width: "100px",
-    height: "100px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: "20px",
-    cursor: "pointer",
-    borderRadius: "5px",
-  },
-};
 
 export default ScoreYearGroups;

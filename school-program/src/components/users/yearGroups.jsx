@@ -51,14 +51,15 @@ const YearlyPoints = () => {
       fontSize: '30px',
       fontWeight: 'bold',
       color: '#fff', // צבע טקסט לבן
-      background: 'linear-gradient(90deg, #6A0DAD, #A658E8)', // רקע סגול דינמי
+      backgroundColor: '#7D3C98', // רקע סגול
       padding: '2px 8px', // ריווח בתוך התיבה
-      borderRadius: '6px', // פינות מעוגלות
-      textAlign: 'center',
       width: 'fit-content', // מתאימים את הרוחב לפי התוכן של הכותרת
       marginLeft: 'auto', // ממורכז אוטומטית
       marginRight: 'auto', // ממורכז אוטומטית
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // הוספת צל לכותרת
+      borderRadius: '6px', // פינות מעוגלות
+      textAlign: 'center',
+      marginBottom: '20px',
+      marginTop: '40px',
     },
 
     box: {
@@ -70,7 +71,7 @@ const YearlyPoints = () => {
       backgroundColor: 'white',
       borderRadius: '24px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      marginBottom: '12px',
+      marginBottom: '10px',
       padding: '15px',
       border: '2px solid #7D3C98',
       background: 'linear-gradient(90deg,rgb(124, 61, 242), #A658E8,rgb(147, 77, 204) 33%, white 33%)', // שליש מלבן סגול ושלוש אחריו לבן

@@ -4,8 +4,6 @@ import FooterNavigation from '../FooterNavigation';
 import image from '../../images/image1.png';
 import star from '../../images/star.svg';
 
-
-
 const TopClasses = () => {
   const [topClasses, setTopClasses] = useState([]);
 
@@ -14,139 +12,147 @@ const TopClasses = () => {
       .then(response => setTopClasses(response.data))
       .catch(error => console.error('Error fetching top classes:', error));
   }, []);
+
   const convertClassNameToHebrew = (className) => {
     const letterMap = {
-      A: 'א',
-      B: 'ב',
-      C: 'ג',
-      D: 'ד',
-      E: 'ה',
-      F: 'ו',
-      G: 'ז',
-      H: 'ח'
+      A: 'א', B: 'ב', C: 'ג', D: 'ד', E: 'ה', F: 'ו', G: 'ז', H: 'ח'
     };
-  
-    return className
-      .split('')
-      .map(letter => letterMap[letter] || letter)
-      .join("'");
+    
+    const [letter, number] = className.split('');
+    const hebrewLetter = letterMap[letter] || letter;
+    return `${hebrewLetter}'${number}`;
   };
   
   const displayClasses = topClasses.slice(0, 3);
 
+  const styles = {
+    container: {
+      fontFamily: 'Arial, sans-serif',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      backgroundImage: `url(${image})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      minHeight: '100vh',
+      position: 'relative',
+    },
+    navigation: {
+      position: 'absolute',
+      top: '0',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '100%',
+      textAlign: 'center',
+      padding: '10px 0',
+      backgroundColor: 'transparent',
+      paddingTop: '20px',
+    },
+    titleContainer: {
+      fontSize: '30px',
+      fontWeight: 'bold',
+      color: '#fff',
+      backgroundColor: '#7D3C98',
+      padding: '2px 8px',
+      borderRadius: '6px',
+      textAlign: 'center',
+      marginBottom: '5px',
+      marginTop: '0',
+      position: 'absolute',
+      top: '105px',
+      zIndex: '2',
+    },
+    contentBox: {
+      borderRadius: '20px',
+      padding: '20px 30px 120px 30px',
+      marginTop: '95px',
+      width: '80%',
+      maxWidth: '1200px',
+    },
+    classesContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '40px',
+      marginTop: '50px',
+    },
+    classBox: {
+      width: '180px',
+      height: '220px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      position: 'relative',
+    },
+    outerCircle: {
+      width: '180px',
+      height: '180px',
+      borderRadius: '50%',
+      position: 'absolute',
+      background: '#7D3C98',
+      boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.25) inset',
+    },
+    innerCircle: {
+      width: '160px',
+      height: '160px',
+      borderRadius: '50%',
+      background: 'black',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+      fontSize: '60px',
+      fontWeight: 'bold',
+      position: 'relative',
+      zIndex: 1,
+    },
+    pointsBox: {
+      marginTop: '180px',
+      background: '#7D3C98',
+      borderRadius: '16px',
+      padding: '4px 16px',
+      minWidth: '120px',
+      textAlign: 'center',
+      color: 'white',
+      fontSize: '27px',
+      position: 'absolute',
+      fontWeight: 'bold',
+    },
+    topStar: {
+      position: 'absolute',
+      top: '-35px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '90px',
+      height: '90px',
+      zIndex: 2,
+    },
+  };
+
   return (
     <div style={styles.container}>
-        <div style={styles.Navigation}><FooterNavigation /></div>    
-
-      {/* כותרת */}
-      <h2 style={styles.title}>כיתות מובילות</h2>
-      
-      {/* התצוגה של הכיתות */}
-      <div style={styles.classesContainer}>
-      {displayClasses.map((classItem, index) => (
-  <div key={index} style={styles.classCircle}>
-    {index === 0 && <img src={star} alt="Top Star" style={styles.topStar} />} {/* הכוכב יופיע רק עבור המקום הראשון */}
-    <div style={styles.classInfo}>
-      <p style={styles.classText}>{convertClassNameToHebrew(classItem.class_name)}</p>
-      <p style={styles.classPoints}>{classItem.total_points} נקודות</p>
-    </div>
-  </div>
-))}
-
+      <div style={styles.navigation}>
+        <FooterNavigation />
       </div>
       
-      {/* תפריט תחתון */}
-      <div style={{ paddingTop: '50px' }}>
+      <div style={styles.titleContainer}>כיתות מובילות</div>
+      
+      <div style={styles.contentBox}>
+        <div style={styles.classesContainer}>
+          {displayClasses.map((classItem, index) => (
+            <div key={index} style={styles.classBox}>
+              {index === 0 && <img src={star} alt="Top Star" style={styles.topStar} />}
+              <div style={styles.outerCircle}></div>
+              <div style={styles.innerCircle}>{convertClassNameToHebrew(classItem.class_name)}</div>
+              <div style={styles.pointsBox}>{classItem.total_points} נקודות</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
-
-const styles = {
-  container: {
-    fontFamily: 'Arial, sans-serif',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundImage: `url(${image})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    minHeight: "100vh",
-  },
-  active: {
-    fontWeight: 'bold',
-    color: '#7D3C98',
-  },
-  Navigation:{
-    paddingTop: '20px', // הורדת הנתיב מעט למטה
-
-  },
-
-  title: {
-    fontSize: '30px',
-    fontWeight: 'bold',
-    color: '#fff', // צבע טקסט לבן
-    backgroundColor: '#7D3C98', // רקע סגול
-    padding: '2px 8px', // ריווח בתוך התיבה
-    borderRadius: '6px', // פינות מעוגלות
-    textAlign: 'center',
-    marginBottom: '20px',
-    marginTop: '60px',
-  },
-
-  classesContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '30px', // הגדלת המרווחים בין העיגולים
-    width: '100%',
-    marginTop: '150px', // הורדת העיגולים כלפי מטה
-  },
-  classCircle: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '180px', // הגדלת העיגולים
-    height: '180px', // הגדלת העיגולים
-    borderRadius: '50%',
-    backgroundColor: '#000',
-    color: '#fff',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    border: '7px solid #7D3C98',
-    position: 'relative', // הוספת position relative
-      zIndex: 1,
-  },
-  classInfo: {
-    textAlign: 'center',
-  },
-  classText: {
-    fontSize: '60px', // הגדלת הטקסט בתוך העיגול
-    fontWeight: 'bold',
-    
-  },
-  classPoints: {
-    fontSize: '22px',
-    backgroundColor: '#7D3C98',
-    borderRadius: '10px',
-    padding: '4px 11px',
-    color: '#fff',
-    fontWeight: 'bold',
-    position: 'absolute',
-    transform: 'translate(-19%, -0.5%)', 
-    
-  },
-  topStar: {
-    position: 'absolute',
-    top: '-50px', // מיקום הכוכב מעל העיגול
-    left: '50%',
-    transform: 'translateX(-50%)', // ממרכז את הכוכב אופקית
-    width: '90px', // גודל הכוכב
-    height: '90px',
-    // filter: 'drop-shadow(0px 0px 5px gold)', // אפקט זוהר זהוב
-  },
-  
-};
-
 
 export default TopClasses;
